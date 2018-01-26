@@ -1,0 +1,7 @@
+label	|	network	|	fiducial cut	|	energy threshold	|	baseline subtracted	|	charge calibrated	|	flattened	|	normalized	|	margin factor	|	comments
+101117	|	CNN	|	posX posY	|	700 keV charge		|	yes			|	yes			|	yes		|	yes		|	1.0
+102217	|	CNN	|	posX posY	|	700 keV rotated		|	yes			|	yes			|	yes		|	yes		|	1.2
+102417	|	CNN	|	posX posY	|	700 keV rotated		|	yes			|	yes			|	yes		|	no		|	1.2
+103017	|	CNN	|	no		|	1000 keV rotated	|	yes			|	yes			|	yes		|	yes		|	1.2		|	oscillating loss function
+110317	|	CNN	|	no		|	1000 keV rotated	|	yes			|	yes			|	yes		|	yes		|	1.2
+
