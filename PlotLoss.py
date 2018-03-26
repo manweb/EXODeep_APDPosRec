@@ -188,21 +188,38 @@ def PlotSingleCSV(inputFile, nEvents, smoothing):
 
 	fig = plt.figure(figsize=(8,5))
 
+	#plotx, ploty_train, ploty_cv = GetRate(plotx, ploty_train, ploty_cv)
+
 	if smoothing:
 		ploty_train = smooth(ploty_train)
 		ploty_cv = smooth(ploty_cv)
 
-	plt.plot(plotx, ploty_train, color='blue', label='training')
-	plt.plot(plotx, ploty_cv, color='orange', label='validation')
+	plt.plot(plotx, ploty_train, color='blue', label='Training set')
+	plt.plot(plotx, ploty_cv, color='green', label='Validation set')
 
-	plt.legend(bbox_to_anchor=(0.75,0.8), loc='lower left')
+	plt.legend(bbox_to_anchor=(0.58,0.73), fontsize=15, loc='lower left')
 
-	plt.xlabel('epoch')
-	plt.ylabel('loss (mm$^{2}$)')
+	plt.xlabel('Training time [epochs]', fontsize=14)
+	plt.ylabel('Loss [mm$^{2}$]', fontsize=14)
 
-	plt.grid(linestyle=':')
+	plt.grid(linestyle=':', which='both')
 
 	plt.show()
+
+def GetRate(plotx, ploty_train, ploty_cv):
+	r_plotx = []
+	r_ploty_train = []
+	r_ploty_cv = []
+
+	for i, x in enumerate(plotx):
+		if i == 0 or i == len(plotx)-1:
+			continue
+
+		r_plotx.append(x)
+		r_ploty_train.append(np.absolute(ploty_train[i+1]-ploty_train[i-1])/(plotx[i+1]-plotx[i-1]))
+		r_ploty_cv.append(np.absolute(ploty_cv[i+1]-ploty_cv[i-1])/(plotx[i+1]-plotx[i-1]))
+
+	return r_plotx, r_ploty_train, r_ploty_cv
 
 def smooth(x, w=30):
 	s = np.r_[2*x[0]-x[w-1::-1],x,2*x[-1]-x[-1:-w:-1]]

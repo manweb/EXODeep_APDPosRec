@@ -166,6 +166,7 @@ def Eval(filename, model, evalPlotName, trainEnergy = False, scaleLabels = False
 		dsp = APDDisplay()
                 dsp.PlotHistos(predictedData, trueData, title, evalPlotName, trainEnergy, filename)
                 dsp.DisplayPosition(predictedData, trueData, False, evalPlotName.replace('.','_2D.'), title, scaleLabels)
+		#dsp.PlotPositionDiff(predictedData, trueData, evalPlotName.replace('.','_posDiff.'))
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()

@@ -71,20 +71,20 @@ class APDDisplay(object):
 		ax1 = fig.add_subplot(1,2,1)
 		ax2 = fig.add_subplot(1,2,2)
 
-		ax1.set_ylim(-250,250)
-		ax2.set_ylim(-250,250)
-		ax1.set_xlim(-250,250)
-		ax2.set_xlim(-250,250)
+		ax1.set_ylim(-110,110)
+		ax2.set_ylim(-110,110)
+		ax1.set_xlim(-10,210)
+		ax2.set_xlim(-10,210)
 
 		plt.subplots_adjust(left=0.085, right=0.915)
 
 		fig.suptitle(title)
 
-		ax1.set_xlabel('x (mm)')
-		ax1.set_ylabel('y (mm)')
+		ax1.set_xlabel('x [mm]', fontsize=14)
+		ax1.set_ylabel('y [mm]', fontsize=14)
 
-		ax2.set_xlabel('z (mm)')
-		ax2.set_ylabel('y (mm)')
+		ax2.set_xlabel('z [mm]', fontsize=14)
+		ax2.set_ylabel('y [mm]', fontsize=14)
 
 		ax1.grid(linestyle=':')
 		ax2.grid(linestyle=':')
@@ -142,7 +142,16 @@ class APDDisplay(object):
 		ax1.add_patch(circle2)
 		ax1.add_patch(circle3)
 
-		ax1.legend(bbox_to_anchor=(0.75, 0.75), loc='lower left')
+		ax1.plot((75, 125, 125, 75, 75), (-25, -25, 25, 25, -25), linewidth=1.5, color='black')
+		ax2.plot((75, 125, 125, 75, 75), (-25, -25, 25, 25, -25), linewidth=1.5, color='black')
+
+		ax1.text(160, 90, 'reflector', fontsize=12, rotation=-68)
+		ax2.text(5, 85, 'cathode', fontsize=12, rotation=90)
+		ax2.text(185, 85, 'anode', fontsize=12, rotation=90)
+
+		ax1.legend(bbox_to_anchor=(0.05, 0.7), loc='lower left', fontsize=12)
+
+		fig.subplots_adjust(left=0.09, right=0.98, bottom=0.11, top=0.88, wspace=0.26, hspace=0.2)
 
 		if filename:
 			if filename.endswith('.pickle'):
@@ -279,22 +288,28 @@ class APDDisplay(object):
 		dataRes3 = np.subtract(h3_pred, h3_true)
 		dataRes3 = np.divide(dataRes3, h3_true, out=np.zeros_like(dataRes3), where=h3_true!=0)
 
+		dataRes1_err = np.sqrt(np.divide(h1_pred*h1_true+np.power(h1_pred,2), np.power(h1_true, 3), out=np.zeros_like(np.power(h1_true,3)), where=np.power(h1_true,3)!=0))
+
+		dataRes2_err = np.sqrt(np.divide(h2_pred*h2_true+np.power(h2_pred,2), np.power(h2_true, 3), out=np.zeros_like(np.power(h2_true,3)), where=np.power(h2_true,3)!=0))
+
+		dataRes3_err = np.sqrt(np.divide(h3_pred*h3_true+np.power(h3_pred,2), np.power(h3_true, 3), out=np.zeros_like(np.power(h3_true,3)), where=np.power(h3_true,3)!=0))
+
 		#dataRes1 = data[:,0]-trueData[:,0]
 		#dataRes2 = data[:,1]-trueData[:,1]
 		#dataRes3 = data[:,2]-trueData[:,2]
 
-		#ax4.hist(dataRes1, np.linspace(-200,200,80), histtype='step', color='red')
-		#ax5.hist(dataRes2, np.linspace(-200,200,80), histtype='step', color='red')
-		#ax6.hist(dataRes3, np.linspace(-200,200,80), histtype='step', color='red')
+		#ax4.hist(dataRes1, np.linspace(-200,200,40), facecolor='blue', edgecolor='black')
+		#ax5.hist(dataRes2, np.linspace(-200,200,40), facecolor='blue', edgecolor='black')
+		#ax6.hist(dataRes3, np.linspace(-200,200,40), facecolor='blue', edgecolor='black')
 
 		binWidth = np.absolute(bins[1]-bins[0])
 		nBins = dataRes1.shape[0]
 
-		ax4.bar(bins[:-1], dataRes1*100.0, np.ones(nBins)*binWidth, align='edge', facecolor='blue', edgecolor='black', label='true')
+		ax4.bar(bins[:-1], dataRes1*100.0, np.ones(nBins)*binWidth, yerr=dataRes1_err*100, align='edge', facecolor='steelblue', edgecolor='black', label='true')
 
-		ax5.bar(bins[:-1], dataRes2*100.0, np.ones(nBins)*binWidth, align='edge', facecolor='blue', edgecolor='black', label='true')
+		ax5.bar(bins[:-1], dataRes2*100.0, np.ones(nBins)*binWidth, yerr=dataRes2_err*100, align='edge', facecolor='steelblue', edgecolor='black', label='true')
 
-		ax6.bar(bins[:-1], dataRes3*100.0, np.ones(nBins)*binWidth, align='edge', facecolor='blue', edgecolor='black', label='true')
+		ax6.bar(bins[:-1], dataRes3*100.0, np.ones(nBins)*binWidth, yerr=dataRes3_err*100, align='edge', facecolor='steelblue', edgecolor='black', label='true')
 
 		ax1.legend(bbox_to_anchor=(0.05, 0.75), loc='lower left')
 
@@ -312,15 +327,15 @@ class APDDisplay(object):
 		ax5.grid(linestyle=':')
 		ax6.grid(linestyle=':')
 
-		ax4.set_xlabel('x (mm)')
-		ax1.set_ylabel('entries / 10mm')
-		ax4.set_ylabel('residual (%)')
+		ax4.set_xlabel('x [mm]', fontsize=14)
+		ax1.set_ylabel('entries / 10mm', fontsize=14)
+		ax4.set_ylabel('residual [%]', fontsize=14)
 
-		ax5.set_xlabel('y (mm)')
+		ax5.set_xlabel('y [mm]', fontsize=14)
 		#ax2.set_ylabel('entries / 10mm')
 		#ax5.set_ylabel('(pred-true)/true (%%)')
 
-		ax6.set_xlabel('z (mm)')
+		ax6.set_xlabel('z [mm]', fontsize=14)
 		#ax3.set_ylabel('entries / 10mm')
 		#ax6.set_ylabel('(pred-true)/true (%%)')
 
@@ -328,7 +343,7 @@ class APDDisplay(object):
 		ax2.xaxis.set_ticklabels([])
 		ax3.xaxis.set_ticklabels([])
 
-		fig.subplots_adjust(left=0.06, right=0.95, bottom=0.11, top=0.95, wspace=0.2, hspace=0.1)
+		fig.subplots_adjust(left=0.06, right=0.95, bottom=0.12, top=0.95, wspace=0.2, hspace=0.1)
 
 		if title:
 			plt.suptitle(title)
@@ -342,4 +357,61 @@ class APDDisplay(object):
 			print("Plot saved in %s"%filename)
 		else:
 			plt.show()
+
+	def PlotPositionDiff(self, data, trueData, filename=''):
+		fig = plt.figure(figsize=(12,4))
+
+		ax1 = plt.subplot(1,3,1)
+		ax2 = plt.subplot(1,3,2)
+		ax3 = plt.subplot(1,3,3)
+
+		dataRes1 = data[:,0]-trueData[:,0]
+                dataRes2 = data[:,1]-trueData[:,1]
+                dataRes3 = data[:,2]-trueData[:,2]
+
+                ax1.hist(dataRes1, np.linspace(-200,200,80), facecolor='steelblue', edgecolor='black') #histtype='step', color='black', linewidth=1.5) #facecolor='blue', edgecolor='black')
+                ax2.hist(dataRes2, np.linspace(-200,200,80), facecolor='steelblue', edgecolor='black') #histtype='step', color='black', linewidth=1.5) #facecolor='blue', edgecolor='black')
+                ax3.hist(dataRes3, np.linspace(-200,200,80), facecolor='steelblue', edgecolor='black') #histtype='step', color='black', linewidth=1.5) #facecolor='blue', edgecolor='black')
+
+		ax1.set_xlim(-200,200)
+                ax2.set_xlim(-200,200)
+		ax3.set_xlim(-200,200)
+
+		y_lim = 3200
+
+		ax1.set_ylim(0, y_lim)
+		ax2.set_ylim(0, y_lim)
+		ax3.set_ylim(0, y_lim)
+
+		ax1.grid(linestyle=':')
+                ax2.grid(linestyle=':')
+		ax3.grid(linestyle=':')
+
+		ax1.set_xlabel(r'$\Delta$x [mm]', fontsize=14)
+                ax1.set_ylabel(r'entries / 5mm', fontsize=14)
+		ax2.set_xlabel(r'$\Delta$y [mm]', fontsize=14)
+                ax2.set_ylabel(r'entries / 5mm', fontsize=14)
+		ax3.set_xlabel(r'$\Delta$z [mm]', fontsize=14)
+                ax3.set_ylabel(r'entries / 5mm', fontsize=14)
+
+		textFont = 14
+
+		ax1.text(-180, 0.88*y_lim, r'$\mu$ = %.1f mm'%np.mean(dataRes1), fontsize=textFont)
+		ax1.text(-180, 0.81*y_lim, r'$\sigma$ = %.1f mm'%np.std(dataRes1), fontsize=textFont)
+		ax2.text(-180, 0.88*y_lim, r'$\mu$ = %.1f mm'%np.mean(dataRes2), fontSize=textFont)
+		ax2.text(-180, 0.81*y_lim, r'$\sigma$ = %.1f mm'%np.std(dataRes2), fontSize=textFont)
+		ax3.text(-180, 0.88*y_lim, r'$\mu$ = %.1f mm'%np.mean(dataRes3), fontSize=textFont)
+		ax3.text(-180, 0.81*y_lim, r'$\sigma$ = %.1f mm'%np.std(dataRes3), fontSize=textFont)
+
+		plt.subplots_adjust(left=0.06, right=0.98, top=0.9, bottom=0.13, wspace=0.3, hspace=0.1)
+
+		if filename:
+                        if filename.endswith('.pickle'):
+                                with open(filename,'w') as pickleFile:
+                                        pk.dump(fig, pickleFile)
+                        else:
+                                plt.savefig(filename)
+                        print("Plot saved in %s"%filename)
+                else:
+                        plt.show()
 

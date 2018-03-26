@@ -38,16 +38,16 @@ def PlotWaveform(inputFile):
 
 			ax1.set_ylim(0,73)
 
-			ax1.set_xlabel('time ($\mu$s)')
-			ax1.set_ylabel('channel')
+			ax1.set_xlabel('Time [$\mu$s]', fontsize=14)
+			ax1.set_ylabel('Channel', fontsize=14)
 
-			ax2.set_xlabel('time ($\mu$s)')
-			ax2.set_ylabel('channel + offset', labelpad=10)
+			ax2.set_xlabel('Time [$\mu$s]', fontsize=14)
+			ax2.set_ylabel('Amplitude + offset [a.u.]', labelpad=10, fontsize=14)
 
-			ax3.set_xlabel('time ($\mu$s)')
-			ax3.set_ylabel('amplitude (a.u.)', labelpad=10)
+			ax3.set_xlabel('Time [$\mu$s]', fontsize=14)
+			ax3.set_ylabel('Amplitude [a.u.]', labelpad=10, fontsize=14)
 
-			plt.subplots_adjust(left=0.05, right=0.95, bottom=0.12, top=0.95, wspace=0.3)
+			plt.subplots_adjust(left=0.05, right=0.95, bottom=0.13, top=0.95, wspace=0.3)
 
 			#plt.title('E_c = %.2f, E_s = %.2f, x = (%.2f,%.2f,%.2f)'%(labels[3], labels[4], labels[0], labels[1], labels[2]))
 

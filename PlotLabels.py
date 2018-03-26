@@ -131,7 +131,11 @@ def PlotLablesPolished(filenames):
 
 	H2, xedges2, yedges2 = np.histogram2d(dataE, dataZ, bins=(np.linspace(500,3500,40), np.linspace(-200,200,40)))
 	#H2[H2 == 0.0] = np.nan
-	ax3.imshow(np.flipud(H2.T), interpolation='gaussian', extent=[500, 3500, -200, 200], aspect='auto', cmap='viridis')
+	im = ax3.imshow(np.flipud(H2.T), interpolation='gaussian', extent=[500, 3500, -200, 200], aspect='auto', cmap='viridis')
+
+	cbar_ax = fig.add_axes([0.85, 0.1, 0.02, 0.15])
+
+	fig.colorbar(im, cax=cbar_ax, ticks=[0, 60, 120, 180])
 
 	ax2.set_xlim(-200,200)
 	ax3.set_xlim(500,3500)
@@ -164,10 +168,10 @@ def PlotLablesPolished(filenames):
 	ax5.grid(linestyle=':')
 	ax6.grid(linestyle=':')
 
-	ax1.set_ylabel('y (mm)')
-	ax4.set_ylabel('z (mm)')
-	ax5.set_xlabel('x (mm)')
-	ax6.set_xlabel('energy (keV)')
+	ax1.set_ylabel('y [mm]', fontsize=14)
+	ax4.set_ylabel('z [mm]', fontsize=14)
+	ax5.set_xlabel('x [mm]', fontsize=14)
+	ax6.set_xlabel('energy [keV]', fontsize=14)
 
 	plt.show()
 

@@ -9,38 +9,39 @@ import pickle as pk
 from utilities import DataSet
 from display import APDDisplay
 from tensorflow.python import pywrap_tensorflow
+from architecture_medium import *
 
 # Definition of the network architecture
 
 # Name of the weight variables for each layer
-weightName = {  0: 'WConv0',
-                1: 'WConv1',
-                2: 'WConv2',
-                3: 'W0',
-                4: 'W1',
-                5: 'W2',
-                6: 'W3',
-                7: 'W4'}
+#weightName = {  0: 'WConv0',
+#                1: 'WConv1',
+#                2: 'WConv2',
+#                3: 'W0',
+#                4: 'W1',
+#                5: 'W2',
+#                6: 'W3',
+#                7: 'W4'}
 
 # Name of the bias variable for each layer
-biasName = {	0: 'Variable',
-		1: 'Variable_1',
-		2: 'Variable_2',
-		3: 'Variable_3',
-		4: 'Variable_4',
-		5: 'Variable_5',
-		6: 'Variable_6',
-		7: 'Variable_7'}
+#biasName = {	0: 'Variable',
+#		1: 'Variable_1',
+#		2: 'Variable_2',
+#		3: 'Variable_3',
+#		4: 'Variable_4',
+#		5: 'Variable_5',
+#		6: 'Variable_6',
+#		7: 'Variable_7'}
 
 # type of the layer
-layerType = {	0: 'conv',
-		1: 'conv',
-		2: 'conv',
-		3: 'fc',
-		4: 'fc',
-		5: 'fc',
-		6: 'fc',
-		7: 'fc'}
+#layerType = {	0: 'conv',
+#		1: 'conv',
+#		2: 'conv',
+#		3: 'fc',
+#		4: 'fc',
+#		5: 'fc',
+#		6: 'fc',
+#		7: 'fc'}
 
 def PlotWeights(weights):
 	nFiltersIn = weights.shape[2]
@@ -116,7 +117,7 @@ def PlotActivationsConv(layer, img, model, plot3D=False):
 		else:
 			H = tf.nn.relu(tf.nn.conv2d(H_pool, weights, strides=[1,1,1,1], padding='SAME') + bias)
 
-		H_pool = tf.nn.max_pool(H, ksize=[1,2,3,1], strides=[1,2,3,1], padding='SAME')
+		H_pool = tf.nn.max_pool(H, ksize=maxPoolingSize[l], strides=maxPoolingSize[l], padding='SAME')
 
 	with tf.Session() as sess:
 		sess.run(tf.global_variables_initializer())
